@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Everyone</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --button-bg: #4CAF50;
+            --button-hover-bg: #45a049;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --button-bg: #1E88E5;
+            --button-hover-bg: #1565C0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Contact styling */
+        #contact-container {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #contact-container a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #contact-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style the container to center-align content */
+        #link-container div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Adjust the logo image size */
+        #link-container img {
+            width: 350px;
+            max-width: 100%;
+        }
+
+        /* Button styling */
+        .watch-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .watch-button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Toggle button styling */
+        .theme-toggle {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--button-hover-bg);
+        }
+    </style>
+</head>
+<body>
+    <div id="contact-container">
+        <p>For any issues, contact:</p>
+        <p>
+            <a href="mailto:23f3000601@es.study.iitm.ac.in">Gmail</a> | 
+            <a href="https://t.me/dead_d_man" target="_blank">Telegram</a>
+        </p>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+    <div id="link-container"></div>
+
+    <script>
+        // URL of the M3U file
+        const m3uUrl = "https://raw.githubusercontent.com/drmlive/mix/main/jsyz.m3u8";
+
+        // Function to fetch and display links with descriptions and logos
+        async function fetchAndDisplayLinks() {
+            try {
+                const response = await fetch(m3uUrl);
+                const text = await response.text();
+
+                // Split the file contents by line
+                const lines = text.split('\n');
+                const container = document.getElementById("link-container");
+
+                // Loop through lines to handle descriptions, logos, and URLs
+                let description = ""; // To store the description text
+                let logoUrl = "";     // To store the logo URL
+                lines.forEach(line => {
+                    line = line.trim(); // Remove any leading/trailing whitespace
+
+                    if (line.startsWith("#EXTINF")) {
+                        // Extract the logo URL
+                        const logoMatch = line.match(/tvg-logo="(.*?)"/);
+                        logoUrl = logoMatch ? logoMatch[1] : "";
+
+                        // Extract everything after the comma for the description
+                        const descriptionMatch = line.match(/#EXTINF.*?,(.*)/);
+                        description = descriptionMatch ? descriptionMatch[1].trim() : "";
+
+                        // Remove 'tvg-logo' part from the description if it exists
+                        description = description.replace(/tvg-logo=".*?"/, "").trim();
+                    } else if (line.startsWith("http")) {
+                        // Create and display description, logo, and link
+                        const linkContainer = document.createElement("div");
+
+                        // Display the logo image if available
+                        if (logoUrl) {
+                            const logoImg = document.createElement("img");
+                            logoImg.src = logoUrl;
+                            logoImg.alt = "Logo";
+                            linkContainer.appendChild(logoImg);
+                        }
+
+                        // Display the description text if available
+                        if (description) {
+                            const descriptionElem = document.createElement("p");
+                            descriptionElem.textContent = description;
+                            linkContainer.appendChild(descriptionElem);
+                        }
+
+                        const button = document.createElement("a");
+                        button.href = line; // Directly use the M3U8 link
+                        button.textContent = "Click to Watch";
+                        button.className = "watch-button"; // Apply button styling
+                        linkContainer.appendChild(button);
+
+                        // Add to main container
+                        container.appendChild(linkContainer);
+
+                        // Reset description and logo for the next item
+                        description = "";
+                        logoUrl = "";
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching M3U file:", error);
+            }
+        }
+
+        // Run the function on page load
+        fetchAndDisplayLinks();
+
+        // Theme toggle function
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", newTheme);
+        }
+    </script>
+
+    <p>Important Information</p>
+    <p>We do not own any material or streams here, all content and streams are provided by third-party sites & belong to their respective owners.</p>
+
+    <p>API Credit: drmlive</p>
+</body>
+</html>
