@@ -10,6 +10,9 @@
             --text-color: #000000;
             --button-bg: #4CAF50;
             --button-hover-bg: #45a049;
+            --contact-bg: #f9f9f9;
+            --telegram-color: #0088cc;
+            --gmail-color: #ea4335;
         }
 
         [data-theme="dark"] {
@@ -17,6 +20,7 @@
             --text-color: #ffffff;
             --button-bg: #1E88E5;
             --button-hover-bg: #1565C0;
+            --contact-bg: #222222;
         }
 
         body {
@@ -29,83 +33,75 @@
 
         /* Contact styling */
         #contact-container {
-            background-color: var(--button-bg);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            background-color: var(--contact-bg);
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
-        }
-
-        #contact-container a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        #contact-container a:hover {
-            text-decoration: underline;
-        }
-
-        /* Style the container to center-align content */
-        #link-container div {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .contact-link {
+            display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Adjust the logo image size */
-        #link-container img {
-            width: 350px;
-            max-width: 100%;
-        }
-
-        /* Button styling */
-        .watch-button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 10px;
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
+            justify-content: center;
+            padding: 10px 15px;
             border-radius: 5px;
+            color: white;
+            font-weight: bold;
             text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        .watch-button:hover {
-            background-color: var(--button-hover-bg);
+        .contact-link img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
         }
 
-        /* Toggle button styling */
-        .theme-toggle {
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+        .contact-link.telegram {
+            background-color: var(--telegram-color);
         }
 
-        .theme-toggle:hover {
-            background-color: var(--button-hover-bg);
+        .contact-link.telegram:hover {
+            transform: scale(1.1);
+            background-color: #006cb7;
+        }
+
+        .contact-link.gmail {
+            background-color: var(--gmail-color);
+        }
+
+        .contact-link.gmail:hover {
+            transform: scale(1.1);
+            background-color: #c52e28;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <div id="contact-container">
-        <p>For any issues, contact:</p>
-        <p>
-            <a href="mailto:23f3000601@es.study.iitm.ac.in">Gmail</a> | 
-            <a href="https://t.me/dead_d_man" target="_blank">Telegram</a>
-        </p>
+        <a href="mailto:23f3000601@es.study.iitm.ac.in" class="contact-link gmail">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail Logo"> Gmail
+        </a>
+        <a href="https://t.me/dead_d_man" class="contact-link telegram" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo"> Telegram
+        </a>
     </div>
 
     <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light Mode</button>
